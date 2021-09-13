@@ -122,6 +122,35 @@ void postorder(Node *root)
     }
 }
 
+
+//Post Order Traversal Iterative
+//2 stack method
+void iterativePostorder(Node *root)
+{
+  stack<Node *> s1;
+  stack<Node *> s2;
+  
+  
+  Node *curr=root;
+  s1.push(curr);
+  
+  while(s1.empty()==false)
+  {
+      curr=s1.top();
+      s1.pop();
+      s2.push(curr);
+      
+      if(curr->left!=NULL)s1.push(curr->left);
+      if(curr->right!=NULL)s1.push(curr->right);
+  }
+  
+  while(s2.empty()==false)
+  {
+      cout<<s2.top()->key<<" ";
+      s2.pop();
+  }
+}
+
 //returns height of the tree
 int height(Node *root)
 {
@@ -252,6 +281,10 @@ int main()
 
     cout<<"Post order Traversal:"<<endl;
     postorder(root);
+    cout<<endl;
+
+    cout<<"Iterative Post order Traversal:"<<endl;
+    iterativePostorder(root);
     cout<<endl;
 
     cout<<endl;
