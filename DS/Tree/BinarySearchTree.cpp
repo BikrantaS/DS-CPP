@@ -96,7 +96,124 @@ Node *insert2(Node *root, int x){
     else
         parent->right=temp;
     return root;
+}  
+
+/////******TO DELETE A GIVEN NODE************///////////
+// Inorder traversal give the data in sorted order.
+// To get the closest greater value of the node to be deleted
+// we need to find the inorder succesor of the binary tree,which is the
+// next node in inorder traversal.
+
+
+//The inorder successor is the left most leaf of right subtree.
+//This function only works when the root parameter has right not equal to right.
+Node *getSuccessor(Node *curr){
+    curr=curr->right;
+    while(curr!=NULL && curr->left!=NULL)
+        curr=curr->left;
+    return curr;
+}
+
+
+//Delete a given node
+//Time Complexity:O(h)
+//Auxilliary space:O(h)
+Node *delNode(Node *root, int x){
+    if(root==NULL)
+        return root;
+    if(root->key>x)
+        root->left=delNode(root->left,x);
+    else if(root->key<x)
+        root->right=delNode(root->right,x);
+    else{
+        if(root->left==NULL){
+            Node *temp=root->right;
+            delete root;
+            return temp;
+        }
+        else if(root->right==NULL){
+            Node *temp=root->left;
+            delete root;
+            return temp;
+        }
+        else{
+            Node *succ=getSuccessor(root);
+            root->key=succ->key;
+            root->right=delNode(root->right,succ->key);
+        }
+    }
+    return root;
+}
+
+
+//Returns floor node of the input data
+//Time Complexity:O(h)
+//Auxilliary space:O(1)
+Node *floor(Node *root, int x)
+{
+    Node *res=NULL;
+    while(root!=NULL){
+        if(root->key==x)
+            return root;
+        else if(root->key>x)
+            root=root->left;
+        else{
+            res=root;
+            root=root->right;
+        }
+    }
+    return res;
 } 
+
+//Returns ceil node of the input data
+//Time Complexity:O(h)
+//Auxilliary space:O(1)
+Node *ceil(Node *root, int x){
+    Node *res=NULL;
+    while(root!=NULL){
+        if(root->key==x)
+            return root;
+        else if(root->key<x)
+            root=root->right;
+        else{
+            res=root;
+            root=root->left;
+        }
+    }
+    return res;
+} 
+
+
+//MEN AT WORK
+// void insert3(Node *root, int x)
+// {
+//     Node *temp=new Node(x);
+//     if(root==NULL)root=temp;
+//     Node *curr=root;
+
+//     while(curr!=NULL)
+//     {
+//         if(root->key>x)
+//         {
+//             if(root->left==NULL)
+//                 root->left=curr;
+            
+//            root=root->left;
+//         }
+//         else if(root->key<x)
+//         {
+//             if(root->right==NULL)
+//                 root->right=curr;
+            
+//          root=root->right;
+//         }
+//         else
+//         {
+//             cout<<"Data is Not distinct"<<endl;
+//             break;
+//         }
+//     }
+// }
 
 
 
@@ -119,24 +236,35 @@ int main() {
   else
       cout<<"Not Found";
 
-  //inserts 90 in the tree
-  root=insert(root,90);
-
   cout<<endl;
   cout<<"Pre order Traversal:"<<endl;
   preorder(root);
   cout<<endl;
 
+  // inserts 90 in the tree
+  root=insert(root,90);
 
+  cout<<endl;
+  cout<<"Inserts 90 in the tree"<<endl;
+  cout<<"Pre order Traversal:"<<endl;
+  preorder(root);
+  cout<<endl;
 
+  root=delNode(root,90);
+  cout<<endl;
+  cout<<"Delete 90 in the tree"<<endl;
+  cout<<"Pre order Traversal:"<<endl;
+  preorder(root);
+  cout<<endl;
 
+  cout<<endl;
+  cout<<"The floor of 17 is:";
+  cout<<"Floor: "<<(floor(root,17)->key);
+  cout<<endl;
 
-
-
-
-
-
-
+  cout<<"The ceil of 17 is:";
+  cout<<"Ceil: "<<(ceil(root,17)->key);
+  cout<<endl;
 
 
 
