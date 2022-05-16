@@ -97,7 +97,6 @@ int findWays(vector<int> &num, int tar)
 
 //Number Of Subsets (codestudio) gives TLE
 //Using recursive  approach
-//TC:n*tar SC:n*tar + n 
 //TC:2^n SC:n 
 int f(int i,int target,vector<int> &num)
 {
